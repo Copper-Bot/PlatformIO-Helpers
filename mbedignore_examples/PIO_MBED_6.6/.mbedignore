@@ -2,6 +2,7 @@ connectivity/drivers/802.15.4_RF
 connectivity/drivers/wifi
 connectivity/drivers/cellular
 connectivity/drivers/nfc
+connectivity/drivers/emac
 connectivity/libraries
 connectivity/cellular
 connectivity/lorawan
