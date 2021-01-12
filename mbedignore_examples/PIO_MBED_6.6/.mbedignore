@@ -1,0 +1,12 @@
+connectivity/drivers/802.15.4_RF
+connectivity/drivers/wifi
+connectivity/drivers/cellular
+connectivity/drivers/nfc
+connectivity/libraries
+connectivity/cellular
+connectivity/lorawan
+connectivity/lwipstack
+connectivity/nanostack
+connectivity/netsocket
+connectivity/nfc
+features/frameworks

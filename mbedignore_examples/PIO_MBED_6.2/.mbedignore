@@ -1,0 +1,8 @@
+components/802.15.4_RF
+components/wifi
+features/cellular
+features/lorawan
+features/lwipstack
+features/nanostack
+features/netsocket
+features/nfc
