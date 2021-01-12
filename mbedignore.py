@@ -1,8 +1,10 @@
+from os import path
 import os.path
 import sys
 from pathlib import Path
 from shutil import copyfile
 
+Import("env")
 
 def _eprint(*args, **kwargs):
     """ Prints to stderr """
@@ -184,10 +186,15 @@ def apply(mbedignore_path, framework_path):
     # which paths need to be 'unignored'
     copyfile(mbedignore_path, previous_mbedignore_path)
 
+root_dir = env['PROJECT_DIR']
+sys.path.append(path.join(root_dir, 'scripts'))
+mbedignore_path = path.join(root_dir, '.mbedignore')
 
-if __name__ == '__main__':
-    # Execute only if run as a script
-    if(len(sys.argv) != 3):
-        _eprint("\nERROR: Wrong number of parameters")
-        _print_usage_and_exit()
-    apply(sys.argv[1], sys.argv[2])
+# Get the right mbed folder path, just in case user have multiple MBED frameworks installed through PIO
+platform = env.PioPlatform()
+mbed_os_dir = platform.get_package_dir("framework-mbed")
+
+print("\nMBED_OS_DIR: " + mbed_os_dir)
+
+# Does the job related to ignoring the paths.
+apply(mbedignore_path, mbed_os_dir)
