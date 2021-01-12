@@ -2,21 +2,7 @@
 
 Python3 is only supported.
 
-For those helpers to work you should 
-[enable use of pre-script in PlatformIO](https://docs.platformio.org/en/latest/projectconf/advanced_scripting.html)
-and put that section to the `extra_script.py`:
-
-```
-from os import path
-import sys
-
-Import("env")
-
-root_dir = env['PROJECT_DIR']
-
-sys.path.append(path.join(root_dir, 'scripts'))
-
-```
+These helpers work by using [PlatformIO pre-script system.](https://docs.platformio.org/en/latest/projectconf/advanced_scripting.html)
 
 
 ## mbedignore.py
@@ -26,8 +12,7 @@ This script allows to ignore specific directories within the mbed-os framework r
 You should be able to use this script freely across different projects without interfering each other,
 when ignoring specific paths within the mbed-os framework. 
 
-The script needs `.mbedignore` file as input and also the path to the mbed-os framework. See 
-[How to use it](#how-to-use-it).
+The script needs `.mbedignore` file as input. See [How to use it](#how-to-use-it).
 
 `.mbedignore` shall contain relative paths which are to be ignored within the mbed-os framework, e.g.:
 
@@ -37,36 +22,34 @@ drivers/source/usb
 components/wifi
 ```
 
-Before you use it, it is suggested to run:
-
-```
-git init
-git add .
-git commit -m "Baseline"
-```
-
-in the mbed-os framework directory, which is most probably `~/.platformio/packages/framework-mbed`.
-
-You'll be protected against unintented changes made by the script.
+> Before you use the script, it is suggested to run:
+>
+> ```
+> git init
+> git add .
+> git commit -m "Baseline"
+> ```
+>
+> in the mbed-os framework directory, which is most probably `~/.platformio/packages/framework-mbed`.
+>
+> You'll be protected against unintended changes made by the script. Alternatively, if something goes wrong, you can always delete `framework-mbed` folder, and PIO will download it again.
+>
 
 ### How to use it
 
-1. Create your `.mbedignore` file and put it e.g. in the root directory of your PlatformIO-based project.
-
-2. Copy `mbedignore.py` script to the e.g. the root directory of your project.
-
-3. Put that section to the `extra_script.py`:
+1. Create your `.mbedignore` file and put it in the root directory of your PlatformIO-based project. Alternatively, you can use one from the example folder of this repository.
+2. Copy `mbedignore.py` script to the root directory of your PIO project.
+3. Add this line to the environment you want in your `paltformio.ini`:
 
 ```
-import mbedignore
-mbedignore_path = path.join(ROOT_DIR, '.mbedignore')
-mbed_os_dir = '/home/username/.platformio/packages/framework-mbed'
-
-# Does the job related to ignoring the paths. 
-mbedignore.apply(mbedignore_path, mbed_os_dir)
+extra_scripts = pre:mbedignore.py
 ```
 
-Tune the paths according to your environment.
+### How to remove it
+
+1. Clear the content of `.mbedignore` but do not delete it.
+2. Do a PIO build (to launch the script at least one time).
+3. Now, all mbed ignore files have been removed from PIO mbed framework folder by the script. You can remove the `extra_scripts` line from your `paltformio.ini`, remove `mbedignore.py` script, and remove `.mbedignore` file.
 
 ## custom_library_json.py
 
@@ -104,11 +87,39 @@ lib_overlay
 
 In the example `path1` is `lib_overlay`.
 
-3. Put that section to the `extra_script.py`:
+3. Create an `extra_script.py` with this content inside:
 
 ```
+from os import path
+import sys
 import custom_library_json
+
+Import("env")
+
+root_dir = env['PROJECT_DIR']
+
+sys.path.append(path.join(root_dir, 'scripts'))
+```
+
+4. Put that section to the `extra_script.py` and repeat the operation depending the number of library you want to add:
+
+```
 custom_library_json.apply(env, 'path1', 'library name')
 ```
 
 Tune the paths according to your environment.
+
+5. Add this line to the environment you want in your `paltformio.ini`:
+
+```
+extra_scripts = pre:extra_script.py
+```
+
+If you are already using mbed ignore script, do a multi line:
+
+```
+extra_scripts =
+	pre:mbedignore.py
+	pre:extra_script.py
+```
+
