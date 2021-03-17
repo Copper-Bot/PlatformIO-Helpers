@@ -48,8 +48,15 @@ extra_scripts = pre:mbedignore.py
 ### How to remove it
 
 1. Clear the content of `.mbedignore` but do not delete it.
-2. Do a PIO build (to launch the script at least one time).
+2. Do a PIO build (to launch the script at least one time). When you see "MBED_OS:" line (at the beginning), you can stop the build.
 3. Now, all mbed ignore files have been removed from PIO mbed framework folder by the script. You can remove the `extra_scripts` line from your `paltformio.ini`, remove `mbedignore.py` script, and remove `.mbedignore` file.
+
+### TODO
+
+* Add native support of official `.mbedignore` files.
+* Found a better way to remove properly mbedignore file when not needed.
+* (Secure python main function ?) 
+* Warning about wrong path instead of Error.
 
 ## custom_library_json.py
 
