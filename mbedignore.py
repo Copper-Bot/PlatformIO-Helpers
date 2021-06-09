@@ -1,7 +1,6 @@
 from os import path
 import os.path
 import sys
-from pathlib import Path
 from shutil import copyfile
 
 Import("env")
@@ -27,7 +26,7 @@ def _is_ignored(path):
     contains a line with string '*'.
     """
     mbedignore_path = os.path.join(path, '.mbedignore')
-    if not Path(mbedignore_path).is_file():
+    if not os.path.isfile(mbedignore_path):
         return False
     with open(mbedignore_path) as f:
         lines = f.read().splitlines()
@@ -41,7 +40,7 @@ def _is_extra_newline_necessary(file):
     a line to it. Sometimes there is no newline at the end of the file
     so this function checks that.
     """
-    if not Path(file).is_file() or os.path.getsize(file) == 0:
+    if not os.path.isfile(file) or os.path.getsize(file) == 0:
         return False
     with open(file, 'rb+') as f:
         f.seek(-1, os.SEEK_END)
@@ -68,7 +67,7 @@ def _lines_to_set(path):
     which are lines in the file. Returns empty set when file doesn't exist.
     """
     out = set()
-    if Path(path).is_file():
+    if os.path.isfile(path):
         with open(path) as f:
             out = set(f.read().splitlines())
     return out
@@ -96,7 +95,7 @@ def _make_unignored(path):
     lines = _lines_to_list(mbedignore_path)
     lines.remove('*')
     if len(lines) == 0:
-        Path(mbedignore_path).unlink()
+        os.unlink(mbedignore_path)
     else:
         with open(mbedignore_path, 'w') as f:
             for line in lines:
@@ -158,10 +157,10 @@ def apply(mbedignore_path, framework_path):
 
     """
     # Perform sanitization
-    if not Path(mbedignore_path).is_file():
+    if not os.path.isfile(mbedignore_path):
         _eprint("\nERROR: Input .mbedignore is not a file.")
         _print_usage_and_exit()
-    if not Path(framework_path).is_dir():
+    if not os.path.isdir(framework_path):
         _eprint(
             "\nERROR: The specified path to the mbed-os framework "
             "is not a directory.")
