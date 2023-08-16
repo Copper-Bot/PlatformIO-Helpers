@@ -1,3 +1,24 @@
+# THIS IS DEPRECATED
+
+Since 20/07/2023, the PlatformIO package "builder-framework-mbed" natively support `.mbedignore` files (see this [related commit](https://github.com/platformio/builder-framework-mbed/commit/ca4bbc47785d693c55afea4db038f4188afd9c01)). You don't have to use this repository anymore, or install a custom python script.
+
+Just add a normal `.mbedignore` file, which respects [official Mbed file format](https://os.mbed.com/docs/mbed-os/v6.16/program-setup/build-rules.html).
+
+**BE AWARE:** Do not use any `.mbedignore` of this repo, as they were edited to work specifically with this custom script, and will not work anymore with [mbed-cli](https://github.com/ARMmbed/mbed-cli) or platformio.
+
+If you are looking for a `.mbedignore` example, [you can try this one](https://github.com/platformio/builder-framework-mbed/pull/26#issuecomment-934252968), which is working great with Mbed 6.17.
+
+
+
+
+The following is now deprecated, and should not be used with last versions of Platformio:
+
+<details>
+  <summary>OLD README</summary>
+
+​    
+
+
 # PlatformIO Helpers
 
 Python3 is only supported.
@@ -130,3 +151,6 @@ extra_scripts =
 	pre:extra_script.py
 ```
 
+
+
+</details>
